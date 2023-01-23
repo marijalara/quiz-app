@@ -39,19 +39,37 @@ const App=() => {
             ]
         }
     ]
+    const [current, setCurrent]=useState(0)
+    // const [selectedAnswer, setSelectedAnswer]=useState('')
+    // const [result, setResult]=useState({
+    //     score: 0,
+    //     isCorrect: 0,
+    //     wrongAnswer: 0
+    // })
+
+    const onClickHandle=() => {
+        const nextQuestion= current + 1
+        setCurrent(nextQuestion)
+        
+        if(nextQuestion<questions.length) {
+            setCurrent(nextQuestion)
+        } else {
+            alert('End of the quiz')
+        }
+    }
     return(
         <div className="app">
             <>
         <div className="container">
             <div className="title">
-                <span>Question 1/{questions.length}</span>
+                <span>Question {current +1}/{questions.length}</span>
             </div>
-                <div className="question">{questions[0].questionText}</div>
+                <div className="question">{questions[current].questionText}</div>
             </div>
           <div className="btn">
-            {questions[0].answerOptions.map((answerOption, index) => {
+            {questions[current].answerOptions.map((answerOption, index) => {
                 return(
-                    <button key={index}>
+                    <button onClick={onClickHandle} key={index}>
                         {answerOption.answerText}
                     </button>
                 )
