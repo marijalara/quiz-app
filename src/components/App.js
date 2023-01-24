@@ -40,42 +40,48 @@ const App=() => {
         }
     ]
     const [current, setCurrent]=useState(0)
-    // const [selectedAnswer, setSelectedAnswer]=useState('')
-    // const [result, setResult]=useState({
-    //     score: 0,
-    //     isCorrect: 0,
-    //     wrongAnswer: 0
-    // })
-
-    const onClickHandle=() => {
+    const [score, setScore]=useState(0)
+    const [showResults, setShowResults]=useState(false)
+  
+    const onClickHandle=(isCorrect) => {
         const nextQuestion= current + 1
         setCurrent(nextQuestion)
         
         if(nextQuestion<questions.length) {
             setCurrent(nextQuestion)
         } else {
-            alert('End of the quiz')
+            setShowResults(true)
+        }
+
+        if(isCorrect) {
+            setScore(score + 1)
         }
     }
     return(
         <div className="app">
-            <>
-        <div className="container">
-            <div className="title">
-                <span>Question {current +1}/{questions.length}</span>
-            </div>
-                <div className="question">{questions[current].questionText}</div>
-            </div>
-          <div className="btn">
-            {questions[current].answerOptions.map((answerOption, index) => {
-                return(
-                    <button onClick={onClickHandle} key={index}>
-                        {answerOption.answerText}
-                    </button>
-                )
-                })}
-          </div>
-          </>
+            {showResults ? (
+                <div className="score">
+                <h2>{score} out of {questions.length} correct - ({(score / questions.length) * 100}%)</h2>
+            </div> 
+            ): (
+                <>
+                <div className="container">
+                    <div className="title">
+                        <span>Question {current +1}/{questions.length}</span>
+                    </div>
+                        <div className="question">{questions[current].questionText}</div>
+                    </div>
+                  <div className="btn">
+                    {questions[current].answerOptions.map((answerOption, index) => {
+                        return(
+                            <button onClick={() => onClickHandle(answerOption.isCorrect)} key={index}>
+                                {answerOption.answerText}
+                            </button>
+                        )
+                        })}
+                  </div>
+                  </>
+            )}
         </div>
     )
 }
